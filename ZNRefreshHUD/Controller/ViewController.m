@@ -33,7 +33,6 @@ static NSString * const ID = @"TIME_CELL";
     
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     self.tableView.separatorColor = [UIColor orangeColor];
-    
     self.tableView.ZNHeader = [ZNRefreshHUD refreshHUD];
     self.tableView.ZNHeader.callBackDelegate = self;
     

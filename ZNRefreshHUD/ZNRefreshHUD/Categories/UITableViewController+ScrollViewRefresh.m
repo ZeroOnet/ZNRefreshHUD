@@ -14,38 +14,23 @@
 @implementation UITableViewController (ScrollViewRefresh)
 
 + (void)load {
-    Class selfClass = self.class;
-    
-    SEL originalDidScroll = @selector(scrollViewDidScroll:);
-    SEL swizzledDidScroll = @selector(ZN_scrollViewDidScroll:);
-    
-    SEL originalDidEndDragging = @selector(scrollViewDidEndDragging:willDecelerate:);
-    SEL swizzledDidEndDragging = @selector(ZN_scrollViewDidEndDragging:willDecelerate:);
-    
-    SEL originalWillBeginDragging = @selector(scrollViewWillBeginDragging:);
-    SEL swizzledWillBeginDragging = @selector(ZN_scrollViewWillBeginDragging:);
-    
-    Method originalDidScro = class_getInstanceMethod(selfClass, originalDidScroll);
-    Method swizzledDidScro = class_getInstanceMethod(selfClass, swizzledDidScroll);
-    
-    Method originalDidEndDrag = class_getInstanceMethod(selfClass, originalDidEndDragging);
-    Method swizzledDidEndDrag = class_getInstanceMethod(selfClass, swizzledDidEndDragging);
-    
-    Method originalWillBeginDrag = class_getInstanceMethod(selfClass, originalWillBeginDragging);
-    Method swizzledWillBeginDrag = class_getInstanceMethod(selfClass, swizzledWillBeginDragging);
-
-    class_addMethod(selfClass, originalDidScroll, imp_implementationWithBlock(^{NSLog(@"Scroll view did scroll");}), nil);
-    class_addMethod(selfClass, originalWillBeginDragging, imp_implementationWithBlock(^{NSLog(@"Scroll view will begin dragging");}), nil);
-    class_addMethod(selfClass, originalDidEndDragging, imp_implementationWithBlock(^{NSLog(@"Scroll view did end dragging");}), nil);
-
-    originalDidScro = class_getInstanceMethod(selfClass, originalDidScroll);
-    originalWillBeginDrag = class_getInstanceMethod(selfClass, originalWillBeginDragging);
-    originalDidEndDrag = class_getInstanceMethod(selfClass, originalDidEndDragging);
-    
-    method_exchangeImplementations(originalDidScro, swizzledDidScro);
-    method_exchangeImplementations(originalWillBeginDrag, swizzledWillBeginDrag);
-    method_exchangeImplementations(originalDidEndDrag, swizzledDidEndDrag);
+    [self swizzlingMethodWithOrigSEL:@selector(scrollViewDidScroll:) swiSEL:@selector(ZN_scrollViewDidScroll:) impBlock:^{NSLog(@"Scroll view did scroll");}];
+    [self swizzlingMethodWithOrigSEL:@selector(scrollViewDidEndDragging:willDecelerate:) swiSEL:@selector(ZN_scrollViewDidEndDragging:willDecelerate:) impBlock:^{NSLog(@"Scroll view will begin dragging");}];
+    [self swizzlingMethodWithOrigSEL:@selector(scrollViewWillBeginDragging:) swiSEL:@selector(ZN_scrollViewWillBeginDragging:) impBlock:^{NSLog(@"Scroll view did end dragging");}];
 }
+
+#pragma mark - Private
+
++ (void)swizzlingMethodWithOrigSEL:(SEL)oriSel swiSEL:(SEL)swiSel impBlock:(void (^)(void))imp {
+    Method origMethod = class_getInstanceMethod(self.class, oriSel);
+    Method swiMethod = class_getInstanceMethod(self.class, swiSel);
+    
+    class_addMethod(self.class, oriSel, imp_implementationWithBlock(imp), nil);
+    origMethod = class_getInstanceMethod(self.class, oriSel);
+    
+    method_exchangeImplementations(origMethod, swiMethod);
+}
+
 
 #pragma mark - Method swizzling
 
