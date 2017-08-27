@@ -65,17 +65,17 @@ static NSString * const ID = @"TIME_CELL";
 
 #pragma mark - Scorll view delegate
 
-- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
-    [super scrollViewWillBeginDragging:scrollView];
-}
-
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-    [super scrollViewDidScroll:scrollView];
-}
-
-- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
-    [super scrollViewDidEndDragging:scrollView willDecelerate:decelerate];
-}
+//- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
+//    [super scrollViewWillBeginDragging:scrollView];
+//}
+//
+//- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+//    [super scrollViewDidScroll:scrollView];
+//}
+//
+//- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
+//    [super scrollViewDidEndDragging:scrollView willDecelerate:decelerate];
+//}
 
 #pragma mark - Refreshing call back
 

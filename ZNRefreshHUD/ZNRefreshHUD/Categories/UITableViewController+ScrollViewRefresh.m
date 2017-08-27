@@ -25,8 +25,10 @@
     Method origMethod = class_getInstanceMethod(self.class, oriSel);
     Method swiMethod = class_getInstanceMethod(self.class, swiSel);
     
-    class_addMethod(self.class, oriSel, imp_implementationWithBlock(imp), nil);
-    origMethod = class_getInstanceMethod(self.class, oriSel);
+    if (!origMethod) {
+        class_addMethod(self.class, oriSel, imp_implementationWithBlock(imp), nil);
+        origMethod = class_getInstanceMethod(self.class, oriSel);
+    }
     
     method_exchangeImplementations(origMethod, swiMethod);
 }
