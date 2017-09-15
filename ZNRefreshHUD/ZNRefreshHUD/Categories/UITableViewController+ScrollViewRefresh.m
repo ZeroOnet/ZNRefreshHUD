@@ -25,6 +25,7 @@
     Method origMethod = class_getInstanceMethod(self.class, oriSel);
     Method swiMethod = class_getInstanceMethod(self.class, swiSel);
     
+    // 如果没有实现方法，则添加默认实现
     if (!origMethod) {
         class_addMethod(self.class, oriSel, imp_implementationWithBlock(imp), nil);
         origMethod = class_getInstanceMethod(self.class, oriSel);

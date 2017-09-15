@@ -10,12 +10,15 @@
 #import "ZNRefreshHUD.h"
 #import <objc/runtime.h>
 
+// 动态关联本质是以字符串的地址作为键
+static const void *kZNHeader = &kZNHeader;
+
 @implementation UIScrollView (ZNRefreshHUD)
 
 #pragma mark - Getters and setters
 
 - (ZNRefreshHUD *)ZNHeader {
-    return objc_getAssociatedObject(self, (__bridge void *)@"ZNHeader");
+    return objc_getAssociatedObject(self, kZNHeader);
 }
 
 - (void)setZNHeader:(ZNRefreshHUD *)ZNHeader {
@@ -23,7 +26,7 @@
         [self.ZNHeader removeFromSuperlayer];
         [self.layer insertSublayer:ZNHeader atIndex:1];
         
-        objc_setAssociatedObject(self, ((__bridge void *)@"ZNHeader"), ZNHeader, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+        objc_setAssociatedObject(self, kZNHeader, ZNHeader, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     }
 }
 
